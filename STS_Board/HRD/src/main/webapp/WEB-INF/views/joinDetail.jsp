@@ -11,24 +11,20 @@
             var password = form.password.value.trim();
             var birth = form.birth.value.trim();
 
-            // Regular expressions for validation
 			var idRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,12}$/;
 			var passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,12}$/;
-            var birthRegex = /^\d{4}-\d{2}-\d{2}$/; // yyyy-mm-dd format
-
-            // Check ID
+            var birthRegex = /^\d{4}-\d{2}-\d{2}$/;
+            
             if (!idRegex.test(id)) {
                 alert("아이디는 8~12자리의 영대소문자와 숫자 조합이어야 합니다.");
                 return false;
             }
 
-            // Check Password
             if (!passwordRegex.test(password)) {
                 alert("비밀번호는 8~12자리의 영대소문자와 숫자 조합이어야 합니다.");
                 return false;
             }
 
-            // Check Birthday format
             if (!birth.match(birthRegex)) {
                 alert("생일은 yyyy-mm-dd 형식으로 입력해야 합니다.");
                 return false;

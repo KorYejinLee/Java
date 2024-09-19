@@ -16,11 +16,11 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh; /* Full height of viewport */
+            height: 100vh;
             background-color: #f0f0f0;
         }
         .container {
-            width: 50%; /* Adjust width as needed */
+            width: 50%;
             text-align: center;
             background-color: #fff;
             padding: 20px;
@@ -28,7 +28,7 @@
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
         .input-field {
-            width: calc(100% - 20px); /* Adjust width minus padding */
+            width: calc(100% - 20px);
             padding: 10px;
             margin: 10px 0;
             border: 1px solid #ccc;
@@ -67,23 +67,19 @@
                 <textarea id="content" class="input-field" name="content" rows="5" placeholder="내용을 입력해주세요" required></textarea>
             </div>
             <div>
+                <% 
+                    List<UserVO> db_user = (List<UserVO>) request.getAttribute("board");
+                    String userName = ""; 
+                    
+                    if (db_user != null && !db_user.isEmpty()) {
+                        userName = db_user.get(0).getName();
+                    }
+                %>
+                <input type="hidden" name="userName" value="<%= userName %>">
                 <button type="submit" class="submit-button">Save</button>
                 <button type="button" class="cancel-button" onclick="history.back()">Cancel</button>
             </div>
-        </form>            
-            <div>
-            	<%
-            		response.setCharacterEncoding("UTF-8");
-                	response.setContentType("text/html");
-                	List<UserVO> db_user = (List<UserVO>)request.getAttribute("board");
-            		for(UserVO row : db_user){
-            			out.println("<h1>" + row + "</h1>");
-            			out.println("<br>");
-            		}
-                	//System.out.println("<h1>" + db_user.get(3) + "</h1>");
-            	%>
-            </div>
-
+        </form>
     </div>
 </body>
 </html>

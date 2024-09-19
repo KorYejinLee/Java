@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class DBController extends DBControl {
 	private List<UserVO> db_user;
+	private String userName = null;
     @GetMapping(value="/board")
     public String boardPage(Model model) {
         model.addAttribute("boardList", getListFromDatabase());
@@ -26,14 +27,15 @@ public class DBController extends DBControl {
     }
    
     @GetMapping(value="/board/write")
-    public String boardWrite(Model model) {
-        model.addAttribute("board", db_user);
+    public String boardWrite(Model model, HttpServletRequest request) {
+    	model.addAttribute("board", db_user);
         return "boardDetail";
     }
     
     @PostMapping(value = "/board/save")
     public String submitBoard(BoardVO board, HttpServletRequest request) {
-        DBControl.insert_to_SPRING_TBL(board, request);
+        String userName = request.getParameter("userName");
+    	DBControl.insert_to_SPRING_TBL(board, userName);
         return "redirect:/board";
     }
    
@@ -49,8 +51,8 @@ public class DBController extends DBControl {
 	
     @PostMapping("/member/save")
     public String saveUser(UserVO user) {
-        DBControl.insert_to_SPRING_TBL_User(user); // DB에 사용자 정보 저장
-        return "loginPage"; // 회원가입 완료 후 이동할 URL
+        DBControl.insert_to_SPRING_TBL_User(user); 
+        return "loginPage"; 
     }
    
     @PostMapping("/login")
@@ -65,55 +67,73 @@ public class DBController extends DBControl {
         ds.setUrl(CONNECTION_URL);
         ds.setUsername(DB_USER);
         ds.setPassword(DB_PASSWORD);
-        final String select_sql = "SELECT ID, PASSWORD FROM MEMBER WHERE ID = ? AND PASSWORD = ?";
-        final String select_sql_name = "SELECT * FROM MEMBER";
+        final String select_sql_login_info = "SELECT ID, PASSWORD FROM MEMBER WHERE ID = ? AND PASSWORD = ?";
+        final String select_sql_user_info = "SELECT * FROM MEMBER WHERE ID = ? AND PASSWORD = ?";
+        final String select_sql_username = "SELECT NAME FROM MEMBER WHERE ID = ? AND PASSWORD = ?";
         db_user = new ArrayList<>();
         try {
             Connection connection = ds.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(select_sql);
-            PreparedStatement preparedStatement1 = connection.prepareStatement(select_sql_name);
+            PreparedStatement preparedStatement = connection.prepareStatement(select_sql_login_info);
+            PreparedStatement preparedStatement1 = connection.prepareStatement(select_sql_user_info);
+            PreparedStatement preparedStatement2 = connection.prepareStatement(select_sql_username);
+
             preparedStatement.setString(1, userId);
             preparedStatement.setString(2, password);
-            ResultSet rs = preparedStatement.executeQuery();
-            ResultSet rs_1 = preparedStatement1.executeQuery();
-            if (rs.next()) {
-                isValidUser = true; // ID와 비밀번호가 일치하면 유효 사용자로 설정
-                request.getSession().setAttribute("userId", userId); // 세션에 userId 저장
+            preparedStatement1.setString(1, userId);
+            preparedStatement1.setString(2, password);
+            preparedStatement2.setString(1, userId);
+            preparedStatement2.setString(2, password);
+
+            
+            ResultSet rs_loginInfo = preparedStatement.executeQuery();
+            ResultSet rs_user = preparedStatement1.executeQuery();
+            ResultSet rs_userName = preparedStatement2.executeQuery();
+            
+            if (rs_loginInfo.next()) {
+                isValidUser = true; 
+                request.setAttribute("userId", userId);
+                System.out.println("REQUEST : userId Setting " + userId);
+                
+                if (rs_userName.next()) {
+                	userName = rs_userName.getString(1);
+                    request.setAttribute("userName", userName);
+                    System.out.println("REQUEST : userName Setting " + userName);
+                }
             }
-            rs.close();
+            rs_loginInfo.close();
+            rs_userName.close();
             preparedStatement.close();
-            while(rs_1.next()) {
+            preparedStatement2.close();
+            while(rs_user.next()) {
             	final UserVO user = new UserVO(
-            			rs_1.getString(1),
-            			rs_1.getString(2),
-            			rs_1.getString(3),
-            			rs_1.getString(4),
-            			rs_1.getString(5));
+            			rs_user.getString(1),
+            			rs_user.getString(2),
+            			rs_user.getString(3),
+            			rs_user.getString(4),
+            			rs_user.getString(5));
             	db_user.add(user);	
-//            	System.out.println("DB_USER : " + db_user.toString());
-//            	System.out.println(user.toString());
             }
             ref_model.addAttribute("DB_USER", db_user);
-            rs_1.close();
+            System.out.println("MODEL : " + db_user);
+            
+            rs_user.close();
             preparedStatement1.close();
             connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        
         if (isValidUser) {
-        	return "redirect:/board"; // 로그인 성공 시 게시판 목록 페이지로 이동
+        	return "boardListPage";  
         } else {
-        	ref_model.addAttribute("error", "아이디 또는 비밀번호가 잘못되었습니다."); // 로그인 실패 시 에러 메시지 전달
-            System.out.println("로그인 실패: 아이디 또는 비밀번호가 잘못되었습니다."); // 로그 확인용 출력
-            return "loginPage"; // 로그인 폼 페이지로 다시 이동
+            request.setAttribute("error", "아이디 또는 비밀번호가 잘못되었습니다.");
+        	System.out.println("로그인 실패: 아이디 또는 비밀번호가 잘못되었습니다.");
+            return "loginPage"; 
         }
     }
     
     @GetMapping("/logout")
     public String logout(HttpServletRequest request) {
-        request.getSession().invalidate(); // 세션 무효화
-        return "redirect:/login"; // 로그인 페이지로 리다이렉트
+        return "redirect:/login"; 
     }
 
 

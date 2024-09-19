@@ -1,12 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="com.hrd.app.DBControl" %>
-<%@ page import="com.hrd.app.BoardVO" %>
-<%@ page import="com.hrd.app.UserVO" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page import="java.util.List" %>
+<%@ page import="com.hrd.app.BoardVO" %>
 
-<%! boolean isLoggedIn(HttpServletRequest request) {
-    return request.getSession().getAttribute("userId") != null;
-} %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,14 +14,17 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; /* Full viewport height */
         }
         .navbar {
-            overflow: hidden;
             background-color: #333;
-            margin-bottom: 20px;
             display: flex;
             justify-content: space-between; /* Align items horizontally */
             padding: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Optional shadow for navbar */
+            z-index: 1000; /* Ensure navbar is above other content */
         }
         .navbar a {
             color: #f2f2f2;
@@ -47,15 +46,17 @@
             align-items: center; /* Align items vertically */
         }
         .container {
-            width: 80%; /* Adjust width as needed */
-            text-align: center;
-            margin: auto; /* Center content horizontally */
+            flex: 1; /* Allow container to expand and fill available space */
+            padding: 20px;
+            box-sizing: border-box; /* Include padding in element's total width and height */
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Center align content horizontally */
         }
         .board-table {
             width: 100%;
-            margin-bottom: 20px;
+            max-width: 1200px; /* Maximum width for large screens */
             border-collapse: collapse; /* Collapse borders for a cleaner look */
-            table-layout: fixed; /* Fixed table layout */
         }
         .board-table th, .board-table td {
             padding: 10px; /* Adjust cell padding */
@@ -70,7 +71,21 @@
         }
         .write-button {
             width: 100%;
+            max-width: 1200px; /* Align button with the table width */
             text-align: right;
+            margin-top: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 4px;
+        }
+        button:hover {
+            background-color: #45a049;
         }
     </style>
 </head>
@@ -79,13 +94,17 @@
     <div class="navbar">
         <a href="/board/list" class="active">게시판</a>
         <div class="navbar-right">
-            <% if (isLoggedIn(request)) { %>
-                <span style="color: #f2f2f2; padding: 14px 16px;"><%= request.getSession().getAttribute("userId") %>님 접속 중</span>
-                <a href="/app/logout">로그아웃</a>
-            <% } else { %>
-                <a href="/app/login">로그인</a>
-                <a href="/app/register">회원가입</a>
-            <% } %>
+            <% 
+                String userId = (String) request.getAttribute("userId");
+                if (userId != null && !userId.isEmpty()) { 
+            %>
+                <span style="color: #f2f2f2; padding: 14px 16px;">
+                    <%= userId %>님 접속 중
+                </span>
+            <% 
+                } 
+            %>
+            <a href="/app/logout">로그아웃</a>
         </div>
     </div>
 
@@ -103,16 +122,16 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <% List<BoardVO> boardList = DBControl.getListFromDatabase(); %>
-                    <% for (BoardVO board : boardList) { %>
+                    <!-- Using JSTL to iterate over boardList -->
+                    <c:forEach var="board" items="${boardList}">
                         <tr>
-                            <td><%= board.getSeq() %></td>
-                            <td><%= board.getTitle() %></td>
-                            <td><%= board.getWriter() %></td>
-                            <td><%= board.getContent() %></td>
-                            <td><%= board.getCnt() %></td>
+                            <td>${board.seq}</td>
+                            <td>${board.title}</td>
+                            <td>${board.writer}</td>
+                            <td>${board.content}</td>
+                            <td>${board.cnt}</td>
                         </tr>
-                    <% } %>
+                    </c:forEach>
                 </tbody>
             </table>
         </div>

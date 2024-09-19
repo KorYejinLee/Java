@@ -7,13 +7,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 public class DBControl {
-	public static void insert_to_SPRING_TBL(BoardVO board, HttpServletRequest request) {
-	    final String CONNECTION_URL = "jdbc:oracle:thin:@localhost:1521/xe";
+	public static void insert_to_SPRING_TBL(BoardVO board, String userName) {
+		final String CONNECTION_URL = "jdbc:oracle:thin:@localhost:1521/xe";
 	    final String DB_USER = "admin";
 	    final String DB_PASSWORD = "admin";
 	    final String DB_DRIVER = "oracle.jdbc.OracleDriver";
@@ -24,26 +22,25 @@ public class DBControl {
 	    ds.setUsername(DB_USER);
 	    ds.setPassword(DB_PASSWORD);
 	    
-	    final String insert_sql = "INSERT INTO BOARD(seq, title, writer, content, cnt) VALUES (0, ?, ?, ?, 0)";
+	    final String insert_sql = "INSERT INTO BOARD(seq, title, writer, content, cnt) VALUES (board_seq.NEXTVAL, ?, ?, ?, 0)";
 	    
 	    try {
 	    	Connection connection = ds.getConnection();
-	        //String userId = (String) request.getSession().getAttribute("userId");
-	        String userName = (String) request.getAttribute("DB_USER");
 			PreparedStatement preparedStatement = connection.prepareStatement(insert_sql);
 
 	        preparedStatement.setString(1, board.getTitle());
-	        preparedStatement.setString(2, "홍길동"); // Use retrieved username as writer
+	        preparedStatement.setString(2, userName); 
 	        preparedStatement.setString(3, board.getContent());
 	        
 	        // Execute the update
 	        int row = preparedStatement.executeUpdate();
 	        System.out.println("Inserted rows: " + row);
+	        
+	        preparedStatement.close();
 	    } catch (SQLException e) {
 	        e.printStackTrace();
-	    }
+	    }  
 	}
-
 	
 	public static List<BoardVO> getListFromDatabase(){
         List<BoardVO> boardList = new ArrayList<BoardVO>();
@@ -56,10 +53,10 @@ public class DBControl {
         ds.setUrl(CONNECTION_URL);
         ds.setUsername(DB_USER);
         ds.setPassword(DB_PASSWORD);
-        final String select_sql = "SELECT * FROM BOARD";
+        final String sort_board_sql = "SELECT * FROM BOARD ORDER BY seq ASC";
         try {
 			Connection connection = ds.getConnection();
-			PreparedStatement preparedStatement = connection.prepareStatement(select_sql);
+			PreparedStatement preparedStatement = connection.prepareStatement(sort_board_sql);
 			ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 BoardVO board = new BoardVO(
@@ -80,6 +77,7 @@ public class DBControl {
 
 		return boardList;
 	}
+	
 	public static void insert_to_SPRING_TBL_User(UserVO user) {
 		   final String CONNECTION_URL = "jdbc:oracle:thin:@localhost:1521/xe";
 		   final String DB_USER = "admin";
@@ -109,6 +107,7 @@ public class DBControl {
 			e.printStackTrace();
 	       }
 	}
+	
     // 로그인 체크 메소드
     public static boolean checkLogin(String userId, String password) {
         boolean isValidUser = false;
@@ -129,7 +128,7 @@ public class DBControl {
             preparedStatement.setString(2, password);
             ResultSet rs = preparedStatement.executeQuery();
             if (rs.next()) {
-                isValidUser = true; // ID와 비밀번호가 일치하면 유효 사용자로 설정
+                isValidUser = true; 
             }
             rs.close();
             preparedStatement.close();
