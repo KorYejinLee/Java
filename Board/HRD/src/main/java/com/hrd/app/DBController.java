@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class DBController extends DBControl {
+	// repository commit test
 	private List<UserVO> db_user;
 	private String userName = null;
     @GetMapping(value="/board")
