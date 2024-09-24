@@ -9,7 +9,7 @@ STS(Spring Tool Suite)와 Spring MVC 프레임워크를 활용하여 웹 어플�
 ![screencapture-localhost-8090-app-board-write-2024-09-24-09_12_01](https://github.com/user-attachments/assets/d9dc8198-1ef3-4551-9b59-8ef673d4d4a8)
 
 # DB
-![image](https://github.com/user-attachments/assets/725d7ac9-91c1-488f-9ac3-2d3b5cd71242)
+![image](https://github.com/user-attachments/assets/a11740b1-0f31-492e-bcb5-1c6eda08735c)
 
 # 🛠️ UML
 ![sts_board drawio](https://github.com/user-attachments/assets/7b0ef19f-5e68-4341-ace6-a11175f78f61)
