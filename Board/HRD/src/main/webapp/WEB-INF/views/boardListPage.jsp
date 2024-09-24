@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page import="com.hrd.app.UserVO" %>
 <%@ page import="java.util.List" %>
 <%@ page import="com.hrd.app.BoardVO" %>
 
@@ -90,20 +91,31 @@
     </style>
 </head>
 <body>
-    <!-- Navigation bar -->
-    <div class="navbar">
-        <a href="/board/list" class="active">게시판</a>
-        <div class="navbar-right">
-            <% 
-                String userId = (String) request.getAttribute("userId");
-                if (userId != null && !userId.isEmpty()) { 
-            %>
-                <span style="color: #f2f2f2; padding: 14px 16px;">
-                    <%= userId %>님 접속 중
-                </span>
-            <% 
-                } 
-            %>
+	<% 
+	    // "board" 속성에서 UserVO 리스트를 가져옵니다.
+	    List<UserVO> db_user = (List<UserVO>) request.getAttribute("board");
+	    String userId = ""; 
+	
+	    // db_user가 null이 아니고 비어있지 않은 경우
+	    if (db_user != null && !db_user.isEmpty()) {
+	        userId = db_user.get(0).getId(); // 첫 번째 UserVO 객체에서 ID를 가져옵니다.
+	    }
+	%>
+
+	<!-- Navigation bar -->
+	<div class="navbar">
+	    <a href="${pageContext.request.contextPath}/board" class="active">게시판</a>
+	    <div class="navbar-right">
+	        <% 
+	            // 리스트에서 가져온 userId를 출력합니다.
+	            if (userId != null && !userId.isEmpty()) { 
+	        %>
+	            <span style="color: #f2f2f2; padding: 14px 16px;">
+	                <%= userId %>님 접속 중
+	            </span>
+	        <% 
+	            } 
+	        %>
             <a href="/app/logout">로그아웃</a>
         </div>
     </div>

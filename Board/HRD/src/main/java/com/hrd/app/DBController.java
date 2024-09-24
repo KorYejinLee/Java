@@ -23,6 +23,7 @@ public class DBController extends DBControl {
     @GetMapping(value="/board")
     public String boardPage(Model model) {
         model.addAttribute("boardList", getListFromDatabase());
+    	model.addAttribute("board", db_user);
         return "boardListPage";
     }
    
