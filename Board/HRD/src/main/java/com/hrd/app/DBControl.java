@@ -42,7 +42,7 @@ public class DBControl {
 	    }  
 	}
 	
-	public static List<BoardVO> getListFromDatabase(){
+	public static List<BoardVO> getListFromDatabase(String userName){
         List<BoardVO> boardList = new ArrayList<BoardVO>();
         final String CONNECTION_URL = "jdbc:oracle:thin:@localhost:1521/xe";
         final String DB_USER = "admin";
@@ -53,10 +53,12 @@ public class DBControl {
         ds.setUrl(CONNECTION_URL);
         ds.setUsername(DB_USER);
         ds.setPassword(DB_PASSWORD);
-        final String sort_board_sql = "SELECT * FROM BOARD ORDER BY seq ASC";
+        final String sort_board_sql = "SELECT * FROM BOARD WHERE writer = ? ORDER BY seq ASC"; // 작성자 필터링
         try {
 			Connection connection = ds.getConnection();
 			PreparedStatement preparedStatement = connection.prepareStatement(sort_board_sql);
+			
+	        preparedStatement.setString(1, userName); // 사용자 이름 설정
 			ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 BoardVO board = new BoardVO(

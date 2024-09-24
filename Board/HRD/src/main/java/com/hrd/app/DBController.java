@@ -22,8 +22,12 @@ public class DBController extends DBControl {
 	private String userName = null;
     @GetMapping(value="/board")
     public String boardPage(Model model) {
-        model.addAttribute("boardList", getListFromDatabase());
     	model.addAttribute("user", db_user);
+    	if (db_user != null && !db_user.isEmpty()) {
+            userName = db_user.get(0).getName(); // 첫 번째 사용자 객체에서 이름 가져오기
+        }
+        model.addAttribute("boardList", getListFromDatabase(userName));
+
         return "boardListPage";
     }
    

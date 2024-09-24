@@ -94,11 +94,13 @@
 	<% 
 	    // "board" 속성에서 UserVO 리스트를 가져옵니다.
 	    List<UserVO> db_user = (List<UserVO>) request.getAttribute("user");
-	    String userId = ""; 
+	    String userId = "";
+	    String userName = "";
 	
 	    // db_user가 null이 아니고 비어있지 않은 경우
 	    if (db_user != null && !db_user.isEmpty()) {
 	        userId = db_user.get(0).getId(); // 첫 번째 UserVO 객체에서 ID를 가져옵니다.
+	        userName = db_user.get(0).getName();
 	    }
 	%>
 
