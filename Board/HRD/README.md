@@ -3,14 +3,13 @@ STS(Spring Tool Suite)와 Spring MVC 프레임워크를 활용하여 웹 어플�
 # ⚙️ 기술 스택
 ![image](https://github.com/user-attachments/assets/dd5a72aa-0536-4722-8f38-fa343d76d592)
 # 💻 동작화면
-![image](https://github.com/user-attachments/assets/d466509b-4d1f-4f2a-babb-a89476bb364f)
-![image](https://github.com/user-attachments/assets/e56f6677-ff77-444e-838d-bd3e720247e6)
-![image](https://github.com/user-attachments/assets/b5e82800-3f0a-4cfc-a89d-557737eb3f93)
-![image](https://github.com/user-attachments/assets/21a8e94b-dd48-45e5-8da7-5119985d4735)
+![screencapture-localhost-8090-app-login-2024-09-24-09_09_59](https://github.com/user-attachments/assets/371ab742-2746-452a-9f94-8a70ec1cc2e5)
+![screencapture-localhost-8090-app-register-2024-09-24-09_13_22](https://github.com/user-attachments/assets/8c331891-fb7a-4af3-8d11-e6bc9ba61b34)
+![screencapture-localhost-8090-app-board-2024-09-24-09_12_36](https://github.com/user-attachments/assets/18657530-d243-49c5-a429-f7a2485862ed)
+![screencapture-localhost-8090-app-board-write-2024-09-24-09_12_01](https://github.com/user-attachments/assets/d9dc8198-1ef3-4551-9b59-8ef673d4d4a8)
 
 # DB
 ![image](https://github.com/user-attachments/assets/725d7ac9-91c1-488f-9ac3-2d3b5cd71242)
 
 # 🛠️ UML
-![image](https://github.com/user-attachments/assets/1643d689-f624-4ea9-bf87-22645add9b19)
-
+![sts_board drawio](https://github.com/user-attachments/assets/7b0ef19f-5e68-4341-ace6-a11175f78f61)
