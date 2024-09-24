@@ -122,7 +122,6 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Using JSTL to iterate over boardList -->
                     <c:forEach var="board" items="${boardList}">
                         <tr>
                             <td>${board.seq}</td>

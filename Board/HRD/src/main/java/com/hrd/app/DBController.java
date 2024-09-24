@@ -123,7 +123,7 @@ public class DBController extends DBControl {
             e.printStackTrace();
         }
         if (isValidUser) {
-        	return "boardListPage";  
+        	return "redirect:/board";  
         } else {
             request.setAttribute("error", "아이디 또는 비밀번호가 잘못되었습니다.");
         	System.out.println("로그인 실패: 아이디 또는 비밀번호가 잘못되었습니다.");
