@@ -23,13 +23,13 @@ public class DBController extends DBControl {
     @GetMapping(value="/board")
     public String boardPage(Model model) {
         model.addAttribute("boardList", getListFromDatabase());
-    	model.addAttribute("board", db_user);
+    	model.addAttribute("user", db_user);
         return "boardListPage";
     }
    
     @GetMapping(value="/board/write")
     public String boardWrite(Model model, HttpServletRequest request) {
-    	model.addAttribute("board", db_user);
+    	model.addAttribute("user", db_user);
         return "boardDetail";
     }
     

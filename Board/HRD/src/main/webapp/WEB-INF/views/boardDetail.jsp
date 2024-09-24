@@ -68,7 +68,7 @@
             </div>
             <div>
                 <% 
-                    List<UserVO> db_user = (List<UserVO>) request.getAttribute("board");
+                    List<UserVO> db_user = (List<UserVO>) request.getAttribute("user");
                     String userName = ""; 
                     
                     if (db_user != null && !db_user.isEmpty()) {

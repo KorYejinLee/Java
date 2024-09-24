@@ -93,7 +93,7 @@
 <body>
 	<% 
 	    // "board" 속성에서 UserVO 리스트를 가져옵니다.
-	    List<UserVO> db_user = (List<UserVO>) request.getAttribute("board");
+	    List<UserVO> db_user = (List<UserVO>) request.getAttribute("user");
 	    String userId = ""; 
 	
 	    // db_user가 null이 아니고 비어있지 않은 경우
