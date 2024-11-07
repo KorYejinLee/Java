@@ -1,5 +1,5 @@
 # 🗒️ 프로젝트 소개
-STS(Spring Tool Suite)와 Spring MVC 프레임워크를 활용하여 웹 어플리케이션의 기본 기능을 구현하였습니다.<br> 사용자 인증 및 게시글 기능을 통해 사용자와의 상호작용을 효율적으로 처리하는 것을 목표로 하였습니다.
+STS(Spring Tool Suite)와 Spring MVC 프레임워크를 활용하여 웹 어플리케이션의 기본 기능을 구현하였습니다<br> 사용자 인증 및 게시글 기능을 통해 사용자와의 상호작용을 효율적으로 처리하는 것을 목표로 하였습니다
 # ⚙️ 기술 스택
 ![image](https://github.com/user-attachments/assets/dd5a72aa-0536-4722-8f38-fa343d76d592)
 # 💻 동작화면
